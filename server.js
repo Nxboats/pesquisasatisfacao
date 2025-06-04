@@ -38,7 +38,7 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
 
     const {
       posvenda, servico, prazoserv, time,
-      limpo, recomenda, comentario
+      limpo, recomenda, comentarios
     } = req.body;
 
     const data = {
@@ -59,7 +59,7 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
               "3": time,
               "4": limpo,
               "5": recomenda,
-              "6": comentario
+              "6": comentarios
             }
           }
         ]
