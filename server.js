@@ -1,6 +1,8 @@
+
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -26,10 +28,10 @@ async function loginSankhya() {
 
   const jsessionid = response.data.responseBody?.jsessionid?.["$"];
   if (!jsessionid) throw new Error("Login falhou");
-  return `JSESSIONID=${jsessionid}`;
+  return `JSESSIONID=\${jsessionid}`;
 }
 
-// ROTA PARA CONSULTAR ITENS DO PEDIDO
+// ROTA PARA INSERIR PESQUISA
 app.post('/api/inserir-pesquisa', async (req, res) => {
   try {
     const sessionId = await loginSankhya();
@@ -83,7 +85,15 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
   }
 });
 
+// Servir arquivos estáticos (como index.html e style.css)
+app.use(express.static(path.join(__dirname)));
 
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Iniciar servidor na porta da Render
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
