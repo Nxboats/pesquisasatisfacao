@@ -38,7 +38,7 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
 
     const {
       posvenda, servico, prazoserv, time,
-      limpo, recomenda, comentarios
+      limpo, recomenda, comentarios, nunota
     } = req.body;
 
     const data = {
@@ -48,7 +48,7 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
         standAlone: false,
         fields: [
           "POSVENDA", "SERVICO", "PRAZOSERV", "TIME",
-          "LIMPO", "RECOMENDA", "COMENTARIO"
+          "LIMPO", "RECOMENDA", "COMENTARIO", "NUNOTA"
         ],
         records: [
           {
@@ -59,7 +59,8 @@ app.post('/api/inserir-pesquisa', async (req, res) => {
               "3": time,
               "4": limpo,
               "5": recomenda,
-              "6": comentarios
+              "6": comentarios,
+              "7": nunota
             }
           }
         ]
