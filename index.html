@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pesquisa de Satisfação Nx Boats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="https://www.allflags.com.br/wp-content/uploads/2017/09/logo_nxboats.png" alt="Logo Nx Boats" class="logo" />
+    <h1>Pesquisa de Satisfação</h1>
+    <p>Agradecemos se puder responder a esta breve pesquisa. Queremos saber como foi sua experiência conosco! 
+      Sua opinião é muito importante para melhorarmos.</p>
+    <form id="pesquisaForm">
+      <fieldset>
+        <legend>1. Como você avalia o atendimento da equipe de pós-venda?</legend>
+        <label><input type="radio" name="posvenda" value="1" /> Excelente</label>
+        <label><input type="radio" name="posvenda" value="2" /> Boa</label>
+        <label><input type="radio" name="posvenda" value="3" /> Regular</label>
+        <label><input type="radio" name="posvenda" value="4" /> Ruim</label>
+        <label><input type="radio" name="posvenda" value="5" /> Péssima</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. O serviço realizado atendeu às suas expectativas?</legend>
+        <label><input type="radio" name="servico" value="1" /> Excelente</label>
+        <label><input type="radio" name="servico" value="2" /> Boa</label>
+        <label><input type="radio" name="servico" value="3" /> Regular</label>
+        <label><input type="radio" name="servico" value="4" /> Ruim</label>
+        <label><input type="radio" name="servico" value="5" /> Péssima</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Como você avalia o prazo de execução do serviço?</legend>
+        <label><input type="radio" name="prazoserv" value="1" /> Excelente</label>
+        <label><input type="radio" name="prazoserv" value="2" /> Boa</label>
+        <label><input type="radio" name="prazoserv" value="3" /> Regular</label>
+        <label><input type="radio" name="prazoserv" value="4" /> Ruim</label>
+        <label><input type="radio" name="prazoserv" value="5" /> Péssima</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Como você avalia a cordialidade e profissionalismo do time de pós-venda?</legend>
+        <label><input type="radio" name="time" value="1" /> Excelente</label>
+        <label><input type="radio" name="time" value="2" /> Boa</label>
+        <label><input type="radio" name="time" value="3" /> Regular</label>
+        <label><input type="radio" name="time" value="4" /> Ruim</label>
+        <label><input type="radio" name="time" value="5" /> Péssima</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Após a execução do serviço o barco foi entregue limpo e arrumado?</legend>
+        <label><input type="radio" name="limpo" value="1" /> Sim</label>
+        <label><input type="radio" name="limpo" value="2" /> Parcialmente</label>
+        <label><input type="radio" name="limpo" value="3" /> Não</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>6. Em um escala de 0 a 10, qual a probabilidade de você indicar nossos
+          serviços a amigos ou colegas?</legend>
+        <div class="scale-container">
+          <!-- 0 a 10 escala -->
+          <label><input type="radio" name="recomenda" value="1" />0 (Nada Provável)</label>
+          <label><input type="radio" name="recomenda" value="2" />1</label>
+          <label><input type="radio" name="recomenda" value="3" />2</label>
+          <label><input type="radio" name="recomenda" value="4" />3</label>
+          <label><input type="radio" name="recomenda" value="5" />4</label>
+          <label><input type="radio" name="recomenda" value="6" />5</label>
+          <label><input type="radio" name="recomenda" value="7" />6</label>
+          <label><input type="radio" name="recomenda" value="8" />7</label>
+          <label><input type="radio" name="recomenda" value="9" />8</label>
+          <label><input type="radio" name="recomenda" value="10" />9</label>
+          <label><input type="radio" name="recomenda" value="11" />10 (Muito Provável)</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>7. Comentários ou sugestões</legend>
+        <textarea name="comentarios" id="comentarios"placeholder="Compartilhe suas ideias (opcional)"></textarea>
+      </fieldset>
+
+      <!-- Perguntas da pesquisa aqui (omiti para foco no login) -->
+
+      <button type="submit">Enviar Pesquisa</button>
+    </form>
+  </div>
+
+  <!-- Modal Feedback -->
+  <div class="modal" id="modalSucesso">
+    <div class="modal-content">
+      <i class="bi bi-check-circle-fill"></i>
+      <h2>Obrigado!</h2>
+      <p>Seu feedback foi enviado com sucesso.</p>
+      <p><strong>Session ID:</strong> <span id="sessionIdTexto">Carregando...</span></p>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const nunota = urlParams.get('id');
+    const form = document.getElementById('pesquisaForm');
+    const modal = document.getElementById('modalSucesso');
+    const sessionIdTexto = document.getElementById('sessionIdTexto');
+  
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+  
+      const getRadioValue = (name) => {
+        const selected = document.querySelector(`input[name="${name}"]:checked`);
+        return selected ? selected.value : null;
+      };
+  
+      
+      const data = {
+        posvenda: getRadioValue('posvenda'),
+        servico: getRadioValue('servico'),
+        prazoserv: getRadioValue('prazoserv'),
+        time: getRadioValue('time'),
+        limpo: getRadioValue('limpo'),
+        recomenda: getRadioValue('recomenda'),
+        comentarios: document.querySelector('textarea[name="comentarios"]').value || null,
+        nunota: nunota
+      };
+  
+      try {
+        const response = await fetch('http://localhost:3000/api/inserir-pesquisa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+  
+        const result = await response.json();
+        sessionIdTexto.innerText = result.sucesso
+          ? 'Pesquisa enviada com sucesso no Sankhya!'
+          : 'Erro ao enviar: ' + (result.erro || 'Desconhecido');
+  
+      } catch (error) {
+        console.error('Erro ao chamar a API:', error);
+        sessionIdTexto.innerText = 'Erro ao enviar pesquisa para o servidor.';
+      }
+  
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.style.display = 'none';
+        form.reset();
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
