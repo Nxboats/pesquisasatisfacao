@@ -28,7 +28,7 @@ async function loginSankhya() {
 
   const jsessionid = response.data.responseBody?.jsessionid?.["$"];
   if (!jsessionid) throw new Error("Login falhou");
-  return `JSESSIONID=\${jsessionid}`;
+  return `JSESSIONID=${jsessionid}`;
 }
 
 // ROTA PARA INSERIR PESQUISA
